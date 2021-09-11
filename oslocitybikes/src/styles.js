@@ -143,13 +143,3 @@ export const Toggle = styled.div`
     border-radius: 50%;
   }
 `;
-
-/*
-  input:checked + .slider {
-    background-color: #33cc33;
-  }
-
-  input:focus + .slider {
-    box-shadow: 0 0 1px #003300;
-  }
-  */
