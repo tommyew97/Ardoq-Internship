@@ -11,7 +11,6 @@ function App() {
       setStationStatus(stationStatus)
     );
   }, []);
-  console.log(stations);
 
   const calculateFreeSpots = (index) => {
     return stations[index].capacity - stationStatus[index].num_bikes_available;
@@ -23,16 +22,17 @@ function App() {
         <DataContainer>
           {stations.map((station, index) => (
             <div key={index} className="card">
-              <span>Navn: {station.name} </span>
+              <span className="text">Navn: {station.name} </span>
               <br />
               <span>Adresse: {station.address} </span>
               <br />
               <span>Kapasitet: {station.capacity} </span>
               <br />
               <span>
-                Tilgjengelig: {stationStatus[index].num_bikes_available}{" "}
+                Ledige plasser: {stationStatus[index].num_bikes_available}{" "}
               </span>
-              <span>Ledig: {calculateFreeSpots(index)}</span>
+              <br />
+              <span>Ledige sykler: {calculateFreeSpots(index)}</span>
             </div>
           ))}
         </DataContainer>
