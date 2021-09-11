@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Container, DataContainer, Header } from "./styles";
+import {
+  Container,
+  DataContainer,
+  Header,
+  SearchBarContainer,
+  Toggle,
+} from "./styles";
 import { fetchStations, fetchStationStatus } from "./api";
 
 function App() {
@@ -7,6 +13,9 @@ function App() {
   const [stationStatus, setStationStatus] = useState([]);
   const [dataReady, setDataReady] = useState(false);
   const [filteredStations, setFilteredStations] = useState([]);
+  const [primaryColor, setPrimaryColor] = useState("#fafafa");
+  const [secondaryColor, setSecondaryColor] = useState("#212121");
+
   useEffect(() => {
     fetchStations().then((stations) => setStations(stations));
     fetchStationStatus().then((stationStatus) =>
@@ -19,7 +28,6 @@ function App() {
     setFilteredStations(stations);
     let allStations = stations;
     let allStatus = stationStatus;
-    let pair;
     for (var i = 0; i < allStations.length; i++) {
       allStations[i].num_bikes_available = allStatus[i].num_bikes_available;
       allStations[i].num_docks_available = allStatus[i].num_docks_available;
@@ -31,7 +39,7 @@ function App() {
   const stationData = () => {
     return (
       <>
-        <DataContainer>
+        <DataContainer primary={primaryColor} secondary={secondaryColor}>
           {filteredStations.map((station, index) => (
             <div key={index} className="card">
               <span className="text">Navn: {station.name} </span>
@@ -58,12 +66,31 @@ function App() {
     setFilteredStations(filteredData);
   };
 
+  const toggleDarkMode = () => {
+    let temp = primaryColor;
+    setPrimaryColor(secondaryColor);
+    setSecondaryColor(temp);
+  };
+
   return (
-    <Container>
-      <Header>
+    <Container primary={primaryColor} secondary={secondaryColor}>
+      <Header primary={primaryColor} secondary={secondaryColor}>
         <span className="header-text">Oslo Bysykkel</span>
       </Header>
-      <input onChange={(event) => filterData(event.target.value)}></input>
+      <Toggle primary={primaryColor} secondary={secondaryColor}>
+        <span className="text">Dark mode</span>
+        <label className="switch">
+          <input type="checkbox" onChange={() => toggleDarkMode()} />
+          <span className="slider round"></span>
+        </label>
+      </Toggle>
+      <SearchBarContainer primary={primaryColor} secondary={secondaryColor}>
+        <input
+          className="searchbar"
+          placeholder="Søk på stasjon..."
+          onChange={(event) => filterData(event.target.value)}
+        ></input>
+      </SearchBarContainer>
       {dataReady ? stationData() : null}
     </Container>
   );
